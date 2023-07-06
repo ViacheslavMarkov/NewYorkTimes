@@ -14,5 +14,4 @@ FOUNDATION_EXPORT double NYUIVersionNumber;
 FOUNDATION_EXPORT const unsigned char NYUIVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <NYUI/PublicHeader.h>
-
-
+#import <UIKit/UIKit.h>
