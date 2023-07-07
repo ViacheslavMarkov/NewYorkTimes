@@ -39,6 +39,10 @@ final class CategoryVC: ViewLoadableVC<CategoryView> {
 
 //MARK: - CategoryVM
 extension CategoryVC: CategoryVMDelegating {
+    func cellTapped(_ sender: NYViewModels.CategoryVM) {
+        print("cellTapped")
+    }
+    
     public func collectionView() -> CollectionView? {
         customView.collectionView
     }

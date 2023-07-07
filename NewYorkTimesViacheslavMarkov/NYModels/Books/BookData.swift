@@ -10,13 +10,19 @@ import Foundation
 public struct BookData: Decodable, Identifiable {
     public let id = UUID().uuidString
     
-    public let listName             : String
-    public let displayName          : String
-    public let oldestPublishedDate  : String
+    public let imageUrlString   : String
+    public let author           : String
+    public let description      : String
+    public let rank             : Int
+    public let publisher        : String
+    public let buyLinks         : [BuyLinksData]
     
     enum CodingKeys: String, CodingKey {
-        case listName               = "list_name"
-        case displayName            = "display_name"
-        case oldestPublishedDate    = "oldest_published_date"
+        case imageUrlString = "book_image"
+        case author
+        case description
+        case rank
+        case publisher
+        case buyLinks       = "buy_links"
     }
 }

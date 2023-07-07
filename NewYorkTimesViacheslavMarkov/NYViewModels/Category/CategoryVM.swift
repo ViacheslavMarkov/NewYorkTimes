@@ -19,7 +19,7 @@ public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Ite
     public var snapshot = Snapshot()
     public weak var delegate: CategoryVMDelegating?
     
-    private var list: [BookData]?
+    private var responseData: OverviewData?
     
     public override init() {
         super.init()
@@ -38,7 +38,7 @@ public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Ite
     }
     
     public func fetchBooks() {
-        let bookNamesAPI = BookNamesAPI(requestObject: EmptyRequest())
+        let bookNamesAPI = CategoryAPI(requestObject: EmptyRequest())
         NetworkRequestManager.shared.call(bookNamesAPI) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
@@ -46,19 +46,22 @@ public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Ite
                 print(error)
             case .success(let response):
                 print(response)
-                self.list = response.results
+                self.responseData = response.results
             }
             self.updateDynamicBooksDataSource()
         }
     }
     
     private func updateDynamicBooksDataSource() {
-        guard let list = list else { return }
-        let models = list.compactMap({ CategoryModel.init(id: $0.id, name: $0.displayName, date: $0.oldestPublishedDate) })
+        guard
+            let response = responseData,
+            let list = responseData?.lists
+        else { return }
+//        let models = list.compactMap({ CategoryModel.init(id: UUID().uuidString, name: $0.displayName, date: response.publishedDate) })
         
         var listItems: [CategorySection.Item] = []
-        list.forEach { book in
-            let model: CategoryModel = .init(id: book.id, name: book.displayName, date: book.oldestPublishedDate)
+        list.forEach { category in
+            let model: CategoryModel = .init(id: UUID().uuidString, name: category.displayName, date: response.publishedDate)
             let item = CategorySection.Item.list(item: model)
             listItems.append(item)
         }

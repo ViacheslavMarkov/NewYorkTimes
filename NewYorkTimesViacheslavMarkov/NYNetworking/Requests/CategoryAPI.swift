@@ -1,5 +1,5 @@
 //
-//  BookNamesAPI.swift
+//  CategoryAPI.swift
 //  NYNetworking
 //
 //  Created by Viacheslav Markov on 07.07.2023.
@@ -8,9 +8,9 @@
 import NYUtilities
 import NYModels
 
-public final class BookNamesAPI: API<EmptyRequest, BookNamesResponse> {
+public final class CategoryAPI: API<EmptyRequest, CategoryResponse> {
     public override func makePathComponent() -> String {
-            return "/lists/names.json"
+            return "/lists/overview.json"
     }
     
     public override func makeMethodType() -> HTTPMethodType {
