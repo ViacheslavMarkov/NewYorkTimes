@@ -28,6 +28,8 @@ public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Ite
     
     public override init() {
         super.init()
+        
+        fetchBooks()
     }
     
     public func applySnapshot(animatingDifferences: Bool = true) {
@@ -40,6 +42,19 @@ public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Ite
         }
         
         dataSource?.apply(snapshot, animatingDifferences: animatingDifferences)
+    }
+    
+    func fetchBooks() {
+        let bookNamesAPI = BookNamesAPI(requestObject: EmptyRequest())
+        NetworkRequestManager.shared.call(bookNamesAPI) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let response):
+                print(response)
+            }
+        }
     }
 }
 
