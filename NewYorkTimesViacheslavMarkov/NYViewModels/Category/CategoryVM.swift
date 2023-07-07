@@ -11,25 +11,18 @@ import NYUI
 import NYModels
 
 public protocol CategoryVMDelegating: ViewModelDelegating {
-    
+    func cellTapped(_ sender: CategoryVM)
 }
 
 public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Item>, ModernListModeling {
-    public var data: [CategorySection: [CategorySection.Item]] {
-        let emptyMessItem = CategorySection.Item.emptyMessage(item: "No categories!")
-        
-        return [
-            .list: [],
-            .emptyMessage: [emptyMessItem]
-        ]
-    }
+    public var data = [CategorySection: [CategorySection.Item]]()
     public var snapshot = Snapshot()
     public weak var delegate: CategoryVMDelegating?
     
+    private var list: [BookData]?
+    
     public override init() {
         super.init()
-        
-        fetchBooks()
     }
     
     public func applySnapshot(animatingDifferences: Bool = true) {
@@ -44,7 +37,7 @@ public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Ite
         dataSource?.apply(snapshot, animatingDifferences: animatingDifferences)
     }
     
-    func fetchBooks() {
+    public func fetchBooks() {
         let bookNamesAPI = BookNamesAPI(requestObject: EmptyRequest())
         NetworkRequestManager.shared.call(bookNamesAPI) { [weak self] (result) in
             guard let self = self else { return }
@@ -53,8 +46,30 @@ public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Ite
                 print(error)
             case .success(let response):
                 print(response)
+                self.list = response.results
             }
+            self.updateDynamicBooksDataSource()
         }
+    }
+    
+    private func updateDynamicBooksDataSource() {
+        guard let list = list else { return }
+        let models = list.compactMap({ CategoryModel.init(id: $0.id, name: $0.displayName, date: $0.oldestPublishedDate) })
+        
+        var listItems: [CategorySection.Item] = []
+        list.forEach { book in
+            let model: CategoryModel = .init(id: book.id, name: book.displayName, date: book.oldestPublishedDate)
+            let item = CategorySection.Item.list(item: model)
+            listItems.append(item)
+        }
+        let emptyMessItem = CategorySection.Item.emptyMessage(item: "No books!")
+        
+        data = [
+            .list: listItems,
+            .emptyMessage: [emptyMessItem]
+        ]
+        
+        applySnapshot()
     }
 }
 
@@ -118,16 +133,9 @@ public extension CategoryVM {
             
             switch section {
             case .list:
-                let itemSpacing = CGFloat(2)
-                let columns = CGFloat(3)
-                let itemWidth = (layoutEnvironment.contentWidth / columns) - ((columns - 1) * itemSpacing)
-                
-                return CellLayoutFactory.makeCategorySnapshotScrollingLayout(
-                    itemWidth: .absolute(itemWidth),
-                    itemHeight: .absolute(170),
-                    layoutEnvironment: layoutEnvironment,
-                    itemsCount: self.data[.list]?.count ?? 0,
-                    groupInterItemSpacing: itemSpacing
+                return CellLayoutFactory.makeFullWidthAndHeightCellLayout(
+                    itemWidth: .fractionalWidth(1),
+                    itemHeight: .estimated(60)
                 )
             case .emptyMessage:
                 return CellLayoutFactory.makeCustomWidthAndHeightScrollingCellsLayout(
@@ -141,6 +149,21 @@ public extension CategoryVM {
                 )
             }
         }, configuration: config)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard
+            let item = itemFrom(indexPath: indexPath)
+        else { return }
+        
+        switch item {
+        case .list(let item):
+            delegate?.cellTapped(self)
+            print("Selected: \(item)")
+        default:
+            assertionFailure("Wrong item sent to \(#function).")
+        }
+        print("Selected: \(indexPath)")
     }
 }
 

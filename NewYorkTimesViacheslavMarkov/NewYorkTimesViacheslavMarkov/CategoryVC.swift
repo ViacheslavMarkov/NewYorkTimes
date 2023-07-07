@@ -29,8 +29,11 @@ final class CategoryVC: ViewLoadableVC<CategoryView> {
         customView.collectionView.dataSource = viewModel.makeDataSource()
         customView.collectionView.delegate = viewModel
         customView.collectionView.collectionViewLayout = viewModel.makeLayout()
-        
-        viewModel.applySnapshot()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchBooks()
     }
 }
 

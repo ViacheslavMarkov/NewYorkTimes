@@ -7,12 +7,18 @@
 
 import Foundation
 
-public struct CategoryModel: Identifiable, Codable, Hashable {
-    public let id = UUID().uuidString
-    
+public struct CategoryModel: Codable, Hashable {
+    public let id: String
     public let name: String
+    public let date: String
     
-    public init(name: String) {
+    public init(
+        id: String,
+        name: String,
+        date: String
+    ) {
+        self.id = id
         self.name = name
+        self.date = date
     }
 }

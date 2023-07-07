@@ -23,9 +23,10 @@ public final class CategoryView: UIView {
         ])
 
         NSLayoutConstraint.activate([
-            collectionView.safeTop.constraint(equalTo: safeTop),
+            collectionView.top.constraint(equalTo: top),
             collectionView.leading.constraint(equalTo: leading),
             collectionView.trailing.constraint(equalTo: trailing),
             collectionView.bottom.constraint(equalTo: bottom)
-        ])    }
+        ])
+    }
 }

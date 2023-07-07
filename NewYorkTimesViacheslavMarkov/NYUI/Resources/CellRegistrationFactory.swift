@@ -13,7 +13,7 @@ public enum CellRegistrationFactory {
         _ customHandler: ((_ cell: CategoryCVCell, _ indexPath: IndexPath, _ item: CategoryModel) -> Void)? = nil
     ) -> UICollectionView.CellRegistration<CategoryCVCell, CategoryModel> {
         genericHandler(defaultHandler: { cell, _, item in
-//            cell.configure(item: item)
+            cell.configureUI(with: item)
 //            cell.configureVideoUI(item.hlsUrl)
             cell.delegate = delegate
         }, customHandler)
