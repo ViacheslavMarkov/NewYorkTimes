@@ -39,7 +39,19 @@ final class BooksVC: ViewLoadableVC<BooksView> {
 }
 
 //MARK: - BooksVC
+private extension BooksVC {
+    func showSafari(link: String) {
+        let url = URL(string: link)
+        presentSafariVC(url: url)
+    }
+}
+
+//MARK: - BooksVC
 extension BooksVC: BooksVMDelegating {
+    func didTapLink(_ sender: NYViewModels.BooksVM, link: String) {
+        showSafari(link: link)
+    }
+    
     public func collectionView() -> CollectionView? {
         customView.collectionView
     }

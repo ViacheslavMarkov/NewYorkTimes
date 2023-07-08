@@ -10,6 +10,7 @@ import NYUtilities
 import UIKit
 
 public protocol BookCVCellDelegating: AnyObject {
+    func didTapLink(_ sender: BookCVCell, link: String)
 }
 
 public final class BookCVCell: UICollectionViewCell {
@@ -48,4 +49,7 @@ public final class BookCVCell: UICollectionViewCell {
 
 //MARK: - BookDetailViewDelegating
 extension BookCVCell: BookDetailViewDelegating {
+    public func didTapLink(_ sender: BookDetailView, link: String) {
+        delegate?.didTapLink(self, link: link)
+    }
 }

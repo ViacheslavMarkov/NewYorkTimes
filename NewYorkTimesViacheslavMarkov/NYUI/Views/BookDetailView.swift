@@ -9,6 +9,7 @@ import NYModels
 import NYUtilities
 
 public protocol BookDetailViewDelegating: AnyObject {
+    func didTapLink(_ sender: BookDetailView, link: String)
 }
 
 public final class BookDetailView: UIView {
@@ -110,6 +111,8 @@ public final class BookDetailView: UIView {
             linksView.trailing.constraint(equalTo: imageView.leading, constant: -16),
             linksView.bottom.constraint(equalTo: mainView.bottom, constant: -8)
         ])
+        
+        linksView.delegate = self
     }
     
     public func configureUI(with model: BookData) {
@@ -124,5 +127,11 @@ public final class BookDetailView: UIView {
         rankView.configureUI(key: listKeys[3], value: "\(model.rank)")
         
         linksView.configureUI(items: model.buyLinks)
+    }
+}
+
+extension BookDetailView: LinksViewDelegating {
+    public func didTapLink(_ sender: LinksView, at link: String) {
+        delegate?.didTapLink(self, link: link)
     }
 }

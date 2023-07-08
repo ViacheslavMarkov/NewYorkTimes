@@ -7,7 +7,13 @@
 
 import NYModels
 
+public protocol LinksViewDelegating: AnyObject {
+    func didTapLink(_ sender: LinksView, at link: String)
+}
+
 public final class LinksView: UIView {
+    public weak var delegate: LinksViewDelegating?
+    
     private lazy var vStack: UIStackView = {
         let v = UIStackView(
             arrangedSubviews: [],
@@ -62,8 +68,21 @@ public final class LinksView: UIView {
         v.configureUI(key: name, value: link)
         v.keyLabel.numberOfLines = 1
         v.valueLabel.numberOfLines = 1
+        v.valueLabel.isUserInteractionEnabled = true
+        v.valueLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(labelTapped)))
         v.tag = tag
         return v
+    }
+    
+    @objc
+    private func labelTapped(sender: UITapGestureRecognizer) {
+        guard
+            let label = sender.view as? UILabel,
+            var link = label.text
+        else { return }
+        let _ = link.removeFirst()
+        let trimmedString = link.trimmingCharacters(in: .whitespaces)
+        delegate?.didTapLink(self, at: trimmedString)
     }
     
     private func addViews(items: [BuyLinksData]) {

@@ -12,6 +12,7 @@ import NYUI
 import NYModels
 
 public protocol BooksVMDelegating: ViewModelDelegating {
+    func didTapLink(_ sender: BooksVM, link: String)
 }
 
 public final class BooksVM: ModernListVM<BookSection, BookSection.Item>, ModernListModeling {
@@ -105,5 +106,7 @@ extension BooksVM {
 
 // MARK: - BookCVCellDelegating
 extension BooksVM: BookCVCellDelegating {
-    
+    public func didTapLink(_ sender: NYUI.BookCVCell, link: String) {
+        delegate?.didTapLink(self, link: link)
+    }
 }

@@ -5,6 +5,8 @@
 //  Created by Viacheslav Markov on 06.07.2023.
 //
 
+import SafariServices
+
 public extension UIViewController {
    func presentBasicAlert(
         title: String = "Error",
@@ -26,5 +28,23 @@ public extension UIViewController {
         }
         alertController.addAction(alertAction)
         present(alertController, animated: true)
+    }
+    
+    func presentSafariVC(
+        url: URL?,
+        entersReaderIfAvailable: Bool = true
+    ) {
+        guard let url = url else {
+            presentBasicAlert(message: "Sorry, we can't show this right now. Please try again later.")
+            return
+        }
+
+        let config = SFSafariViewController.Configuration()
+        config.entersReaderIfAvailable = entersReaderIfAvailable
+
+        let vc = SFSafariViewController(url: url, configuration: config)
+        vc.preferredControlTintColor = .white
+        vc.modalPresentationStyle = .popover
+        present(vc, animated: true)
     }
 }
