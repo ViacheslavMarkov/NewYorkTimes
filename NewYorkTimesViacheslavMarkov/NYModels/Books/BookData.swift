@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct BookData: Decodable, Identifiable {
+public struct BookData: Decodable, Identifiable, Hashable {
     public let id = UUID().uuidString
     
     public let imageUrlString   : String

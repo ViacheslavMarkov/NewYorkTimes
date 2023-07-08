@@ -8,12 +8,12 @@
 import Foundation
 
 public struct CategoryModel: Codable, Hashable {
-    public let id: String
+    public let id: Int
     public let name: String
     public let date: String
     
     public init(
-        id: String,
+        id: Int,
         name: String,
         date: String
     ) {

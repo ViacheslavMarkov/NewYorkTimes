@@ -26,7 +26,8 @@ private extension AppDelegate {
     func showCategoryViewController() {
         let vm = CategoryVM()
         let vc = CategoryVC(viewModel: vm)
-        window?.rootViewController = vc
+        let nav = UINavigationController(rootViewController: vc)
+        window?.rootViewController = nav
         window?.makeKeyAndVisible()
     }
 }

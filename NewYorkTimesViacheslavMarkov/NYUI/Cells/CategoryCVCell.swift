@@ -16,6 +16,13 @@ public protocol CategoryCVCellDelegating: AnyObject {
 public final class CategoryCVCell: UICollectionViewCell {
     public weak var delegate: CategoryCVCellDelegating?
     
+    private let mainView: UIView = {
+        let v = UIView()
+        v.backgroundColor = .black.withAlphaComponent(0.2)
+        v.set(cornerRadius: 8)
+        return v
+    }()
+    
     private lazy var vStack: UIStackView = {
         let v = UIStackView(
             arrangedSubviews: [name, date],
@@ -24,8 +31,6 @@ public final class CategoryCVCell: UICollectionViewCell {
         v.alignment = .fill
         v.distribution = .equalSpacing
         v.spacing = 8
-        v.backgroundColor = .black.withAlphaComponent(0.2)
-        v.set(cornerRadius: 8)
         return v
     }()
     
@@ -54,13 +59,24 @@ public final class CategoryCVCell: UICollectionViewCell {
     }
     
     private func setup() {
-        contentView.add([vStack])
+        contentView.add([
+            mainView
+        ])
+        
+        mainView.add([
+            vStack
+        ])
         
         NSLayoutConstraint.activate([
-            vStack.top.constraint(equalTo: contentView.top),
-            vStack.leading.constraint(equalTo: contentView.leading, constant: 16),
-            vStack.trailing.constraint(equalTo: contentView.trailing, constant: -16),
-            vStack.bottom.constraint(equalTo: contentView.bottom, constant: -12),
+            mainView.top.constraint(equalTo: contentView.top),
+            mainView.leading.constraint(equalTo: contentView.leading, constant: 16),
+            mainView.trailing.constraint(equalTo: contentView.trailing, constant: -16),
+            mainView.bottom.constraint(equalTo: contentView.bottom, constant: -16),
+            
+            vStack.top.constraint(equalTo: mainView.top,constant: 4),
+            vStack.leading.constraint(equalTo: mainView.leading, constant: 4),
+            vStack.trailing.constraint(equalTo: mainView.trailing, constant: -4),
+            vStack.bottom.constraint(equalTo: mainView.bottom, constant: -4),
         ])
     }
     

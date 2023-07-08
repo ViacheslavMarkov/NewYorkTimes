@@ -1,18 +1,19 @@
 //
-//  CategoryVC.swift
+//  BooksVC.swift
 //  NewYorkTimesViacheslavMarkov
 //
-//  Created by Viacheslav Markov on 02.07.2023.
+//  Created by Viacheslav Markov on 07.07.2023.
 //
 
 import UIKit
 import NYUI
 import NYViewModels
+import NYModels
 
-final class CategoryVC: ViewLoadableVC<CategoryView> {
-    private let viewModel: CategoryVM
+final class BooksVC: ViewLoadableVC<BooksView> {
+    private let viewModel: BooksVM
     
-    public init(viewModel: CategoryVM) {
+    public init(viewModel: BooksVM) {
         self.viewModel = viewModel
         super.init()
         self.viewModel.delegate = self
@@ -33,16 +34,12 @@ final class CategoryVC: ViewLoadableVC<CategoryView> {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.fetchBooks()
+        viewModel.updateDynamicBooksDataSource()
     }
 }
 
-//MARK: - CategoryVM
-extension CategoryVC: CategoryVMDelegating {
-    func cellTapped(_ sender: NYViewModels.CategoryVM) {
-        print("cellTapped")
-    }
-    
+//MARK: - BooksVC
+extension BooksVC: BooksVMDelegating {
     public func collectionView() -> CollectionView? {
         customView.collectionView
     }

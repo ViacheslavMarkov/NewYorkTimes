@@ -45,6 +45,19 @@ public enum CellLayoutFactory: CellLayoutConforming {
         return section
     }
     
+        public static func makeFullWidthAndHeightWithoutHeaderCellLayout(itemWidth: Dimension,
+                                                            itemHeight: Dimension) -> Section {
+            let itemSize = Size(widthDimension: itemWidth, heightDimension: itemHeight)
+            let item = Item(layoutSize: itemSize)
+
+            let groupSize = Size(widthDimension: itemWidth, heightDimension: itemHeight)
+            let group = Group.vertical(layoutSize: groupSize, subitems: [item])
+
+            let section = Section(group: group)
+
+            return section
+        }
+    
 //    public static func makeCategorySnapshotScrollingLayout(
 //        itemWidth: Dimension,
 //        itemHeight: Dimension,

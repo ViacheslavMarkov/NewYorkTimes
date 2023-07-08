@@ -11,7 +11,7 @@ import NYUI
 import NYModels
 
 public protocol CategoryVMDelegating: ViewModelDelegating {
-    func cellTapped(_ sender: CategoryVM)
+    func cellTapped(_ sender: CategoryVM, books: [BookData])
 }
 
 public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Item>, ModernListModeling {
@@ -61,7 +61,7 @@ public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Ite
         
         var listItems: [CategorySection.Item] = []
         list.forEach { category in
-            let model: CategoryModel = .init(id: UUID().uuidString, name: category.displayName, date: response.publishedDate)
+            let model: CategoryModel = .init(id: category.listId, name: category.displayName, date: response.publishedDate)
             let item = CategorySection.Item.list(item: model)
             listItems.append(item)
         }
@@ -161,8 +161,11 @@ public extension CategoryVM {
         
         switch item {
         case .list(let item):
-            delegate?.cellTapped(self)
-            print("Selected: \(item)")
+            guard
+                let books = responseData?.lists.first(where: { $0.listId == item.id })?.books
+            else { return }
+                    delegate?.cellTapped(self, books: books)
+            print("Selected books: \(books)")
         default:
             assertionFailure("Wrong item sent to \(#function).")
         }

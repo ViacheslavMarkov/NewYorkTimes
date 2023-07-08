@@ -26,6 +26,16 @@ public enum CellRegistrationFactory {
             cell.configure(item: item)
         }, customHandler)
     }
+    
+    public static func makeBookCellRegistration(
+        delegate: BookCVCellDelegating?,
+        _ customHandler: ((_ cell: BookCVCell, _ indexPath: IndexPath, _ item: BookData) -> Void)? = nil
+    ) -> UICollectionView.CellRegistration<BookCVCell, BookData> {
+        genericHandler(defaultHandler: { cell, _, item in
+            cell.configureUI(with: item)
+            cell.delegate = delegate
+        }, customHandler)
+    }
 }
 
 // MARK: - Helpers
