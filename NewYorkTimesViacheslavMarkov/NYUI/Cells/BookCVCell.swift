@@ -10,13 +10,12 @@ import NYUtilities
 import UIKit
 
 public protocol BookCVCellDelegating: AnyObject {
-    
 }
 
 public final class BookCVCell: UICollectionViewCell {
     public weak var delegate: BookCVCellDelegating?
     
-    private let mainView = BookDetailView()
+    public let mainView = BookDetailView()
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,9 +37,15 @@ public final class BookCVCell: UICollectionViewCell {
         ])
 
         mainView.autoPinEdgesToSuperView()
+        
+        mainView.delegate = self
     }
     
     public func configureUI(with model: BookData) {
         mainView.configureUI(with: model)
     }
+}
+
+//MARK: - BookDetailViewDelegating
+extension BookCVCell: BookDetailViewDelegating {
 }

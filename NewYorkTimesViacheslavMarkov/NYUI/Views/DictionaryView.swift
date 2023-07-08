@@ -6,7 +6,7 @@
 //
 
 public final class DictionaryView: UIView {
-    private lazy var keyLabel: UILabel = {
+    public lazy var keyLabel: UILabel = {
         let l = UILabel()
         l.textAlignment = .left
         l.numberOfLines = 1
@@ -15,7 +15,7 @@ public final class DictionaryView: UIView {
         return l
     }()
     
-    private lazy var valueLabel: UILabel = {
+    public lazy var valueLabel: UILabel = {
         let l = UILabel()
         l.textAlignment = .left
         l.numberOfLines = 0

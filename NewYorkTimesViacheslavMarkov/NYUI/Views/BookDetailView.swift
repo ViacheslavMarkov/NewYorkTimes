@@ -6,10 +6,16 @@
 //
 
 import NYModels
+import NYUtilities
+
+public protocol BookDetailViewDelegating: AnyObject {
+}
 
 public final class BookDetailView: UIView {
     private let imageWidth: CGFloat = UIScreen.main.bounds.width / 5
     private let listKeys = ["Author", "Description", "Published", "Rank"]
+    
+    public weak var delegate: BookDetailViewDelegating?
     
     private let mainView: UIView = {
         let v = UIView()
@@ -18,15 +24,11 @@ public final class BookDetailView: UIView {
         return v
     }()
     
-    private lazy var vStack: UIStackView = {
-        let v = UIStackView(
-            arrangedSubviews: [],
-            axis: .vertical
-        )
-        v.alignment = .fill
-        v.distribution = .equalSpacing
-        v.spacing = 8
-        return v
+    private let linksView: LinksView = {
+        let l = LinksView()
+        l.backgroundColor = .white
+        l.set(borderColor: .black, borderWidth: 1)
+        return l
     }()
     
     private let imageView: UIImageView = {
@@ -65,11 +67,11 @@ public final class BookDetailView: UIView {
         mainView.add([
             imageView,
             name,
-//            vStack
             authorView,
             descriptionView,
             publishedView,
-            rankView
+            rankView,
+            linksView
         ])
         
         NSLayoutConstraint.activate([
@@ -102,7 +104,11 @@ public final class BookDetailView: UIView {
             rankView.top.constraint(equalTo: publishedView.bottom, constant: 12),
             rankView.leading.constraint(equalTo: mainView.leading, constant: 16),
             rankView.trailing.constraint(equalTo: imageView.leading, constant: -16),
-            rankView.bottom.constraint(equalTo: mainView.bottom, constant: -12),
+            
+            linksView.top.constraint(equalTo: rankView.bottom, constant: 12),
+            linksView.leading.constraint(equalTo: mainView.leading, constant: 16),
+            linksView.trailing.constraint(equalTo: imageView.leading, constant: -16),
+            linksView.bottom.constraint(equalTo: mainView.bottom, constant: -8)
         ])
     }
     
@@ -116,5 +122,7 @@ public final class BookDetailView: UIView {
         descriptionView.configureUI(key: listKeys[1], value: model.description)
         publishedView.configureUI(key: listKeys[2], value: model.publisher)
         rankView.configureUI(key: listKeys[3], value: "\(model.rank)")
+        
+        linksView.configureUI(items: model.buyLinks)
     }
 }

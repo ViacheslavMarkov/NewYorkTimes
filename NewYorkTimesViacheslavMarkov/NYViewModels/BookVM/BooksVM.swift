@@ -97,6 +97,10 @@ extension BooksVM {
             }
         }, configuration: config)
     }
+    
+    func expandCell() {
+        
+    }
 }
 
 // MARK: - BookCVCellDelegating
