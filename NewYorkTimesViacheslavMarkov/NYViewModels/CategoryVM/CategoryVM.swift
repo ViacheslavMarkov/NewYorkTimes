@@ -57,7 +57,6 @@ public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Ite
             let response = responseData,
             let list = responseData?.lists
         else { return }
-//        let models = list.compactMap({ CategoryModel.init(id: UUID().uuidString, name: $0.displayName, date: response.publishedDate) })
         
         var listItems: [CategorySection.Item] = []
         list.forEach { category in

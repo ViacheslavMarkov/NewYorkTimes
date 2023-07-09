@@ -56,6 +56,7 @@
 		0D96C3E02A56CFA100D4E26C /* NYUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC562D12A51E9DD00381599 /* NYUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0D96C3E42A56D52100D4E26C /* EmptyMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D96C3E32A56D52100D4E26C /* EmptyMessageCell.swift */; };
 		0D96C3E62A56D5F900D4E26C /* DirectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D96C3E52A56D5F900D4E26C /* DirectionType.swift */; };
+		0DA339532A5B3EA2006063A3 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DA339522A5B3EA2006063A3 /* Reachability.swift */; };
 		0DC562842A51E8A700381599 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC562832A51E8A700381599 /* AppDelegate.swift */; };
 		0DC562882A51E8A700381599 /* CategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC562872A51E8A700381599 /* CategoryVC.swift */; };
 		0DC5628D2A51E8A900381599 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DC5628C2A51E8A900381599 /* Assets.xcassets */; };
@@ -300,6 +301,7 @@
 		0D96C3DD2A56CB2300D4E26C /* NSCollectionLayoutEnvironment+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSCollectionLayoutEnvironment+Extension.swift"; sourceTree = "<group>"; };
 		0D96C3E32A56D52100D4E26C /* EmptyMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyMessageCell.swift; sourceTree = "<group>"; };
 		0D96C3E52A56D5F900D4E26C /* DirectionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionType.swift; sourceTree = "<group>"; };
+		0DA339522A5B3EA2006063A3 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		0DC562802A51E8A700381599 /* NewYorkTimesViacheslavMarkov.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewYorkTimesViacheslavMarkov.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DC562832A51E8A700381599 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DC562872A51E8A700381599 /* CategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryVC.swift; sourceTree = "<group>"; };
@@ -559,6 +561,7 @@
 		0DC562C02A51E99200381599 /* NYNetworking */ = {
 			isa = PBXGroup;
 			children = (
+				0DA339522A5B3EA2006063A3 /* Reachability.swift */,
 				0DC562C12A51E99200381599 /* NYNetworking.h */,
 				0DC562C22A51E99200381599 /* NYNetworking.docc */,
 				0D5AB4082A580B53004FC615 /* NetworkRequestManager.swift */,
@@ -917,6 +920,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DA339532A5B3EA2006063A3 /* Reachability.swift in Sources */,
 				0D5AB40E2A580C1A004FC615 /* JSONDecoder+Extension.swift in Sources */,
 				0D5AB4092A580B53004FC615 /* NetworkRequestManager.swift in Sources */,
 				0D5AB41D2A581DBE004FC615 /* CategoryAPI.swift in Sources */,
