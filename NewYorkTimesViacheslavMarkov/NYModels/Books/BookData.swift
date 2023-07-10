@@ -25,4 +25,20 @@ public struct BookData: Decodable, Identifiable, Hashable {
         case publisher
         case buyLinks       = "buy_links"
     }
+    
+    init(
+        imageUrlString: String,
+        author: String,
+        description: String,
+        rank: Int,
+        publisher: String,
+        buyLinks: [BuyLinksData]
+    ) {
+        self.imageUrlString = imageUrlString
+        self.author = author
+        self.description = description
+        self.rank = rank
+        self.publisher = publisher
+        self.buyLinks = buyLinks
+    }
 }

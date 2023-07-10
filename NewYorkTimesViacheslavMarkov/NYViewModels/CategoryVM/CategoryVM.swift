@@ -58,6 +58,10 @@ public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Ite
             let list = responseData?.lists
         else { return }
         
+//        let res = CoreDataService.getModelsFromDB()
+//
+//        list = res.lists
+        
         var listItems: [CategorySection.Item] = []
         list.forEach { category in
             let model: CategoryModel = .init(id: category.listId, name: category.displayName, date: response.publishedDate)
