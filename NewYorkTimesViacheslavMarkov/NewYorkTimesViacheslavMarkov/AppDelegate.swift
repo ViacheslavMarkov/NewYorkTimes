@@ -17,12 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        checkInternetConnection()
         showCategoryViewController()
         
         return true
     }
 }
 
+//MARK: -  AppDelegate
 private extension AppDelegate {
     func showCategoryViewController() {
         let vm = CategoryVM()

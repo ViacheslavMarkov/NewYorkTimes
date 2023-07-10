@@ -156,12 +156,14 @@ public class CoreDataService {
     }
     
     public static func getModelsFromDB() -> OverviewData {
+        CoreDataStack.shared.clearAllBD()
         let model = retrieveDataFromDB()
         
         guard
             let listsDB = model?.list?.allObjects as? [OverviewDescriptionDBModel]
         else {
-            return OverviewData.init(publishedDate: "", lists: [])
+            let mockData = createMockData()
+            return mockData
         }
         let list = createOverviewDescriptionData(listDB: listsDB)
         
@@ -223,5 +225,40 @@ public class CoreDataService {
             list.append(item)
         })
         return list
+    }
+    
+    private static func createMockData() -> OverviewData {
+        let buyLinks: [BuyLinksData] = [
+            .init(name: "Amazon",
+                  url: "https://www.amazon.com/dp/1538756595?tag=NYTBSREV-20"),
+            .init(name: "Apple Books",
+                  url: "https://goto.applebooks.apple/9781538756591?at=10lIEQ"),
+            .init(name: "Barnes and Noble",
+                  url: "https://www.anrdoezrs.net/click-7990613-11819508?url=https%3A%2F%2Fwww.barnesandnoble.com%2Fw%2F%3Fean%3D9781538756591"),
+            .init(name: "Books-A-Million",
+                  url: "https://du-gae-books-dot-nyt-du-prd.appspot.com/redirect?url1=https%3A%2F%2Fwww.anrdoezrs.net%2Fclick-7990613-35140%3Furl%3Dhttps%253A%252F%252Fwww.booksamillion.com%252Fp%252FTOO%252BLATE%252FColleen%252BHoover%252F9781538756591&url2=https%3A%2F%2Fwww.anrdoezrs.net%2Fclick-7990613-35140%3Furl%3Dhttps%253A%252F%252Fwww.booksamillion.com%252Fsearch%253Fquery%253DTOO%252BLATE%252BColleen%252BHoover"),
+            .init(name: "Bookshop",
+                  url: "https://du-gae-books-dot-nyt-du-prd.appspot.com/redirect?url1=https%3A%2F%2Fbookshop.org%2Fa%2F3546%2F9781538756591&url2=https%3A%2F%2Fbookshop.org%2Fbooks%3Faffiliate%3D3546%26keywords%3DTOO%2BLATE"),
+            .init(name: "IndieBound",
+                  url: "https://du-gae-books-dot-nyt-du-prd.appspot.com/redirect?url1=https%3A%2F%2Fwww.indiebound.org%2Fbook%2F9781538756591%3Faff%3DNYT&url2=https%3A%2F%2Fwww.indiebound.org%2Fsearch%2Fbook%3Fkeys%3DTOO%2BLATE%2BColleen%2BHoover%26aff%3DNYT")
+        ]
+        let books: [BookData] = [
+            .init(imageUrlString: "https://storage.googleapis.com/du-prd/books/images/9781538756591.jpg",
+                  author: "Colleen Hoover",
+                  description: "Dangers develop when a drug trafficker becomes obsessed with a woman who has a mutual attraction to a D.E.A. agent.",
+                  rank: 1,
+                  publisher: "Grand Central",
+                  buyLinks: buyLinks)
+        ]
+        let list: [OverviewDescriptionData] = [
+            .init(listId: 704,
+                  displayName: "Combined Print & E-Book Fiction",
+                  books: books)
+        ]
+        let overview = OverviewData(
+            publishedDate: "2023-07-16",
+            lists: list
+        )
+        return overview
     }
 }

@@ -41,7 +41,8 @@ public class Reachability {
         isReachableOnWWAN = true
         try start()
     }
-    var status: Network.Status {
+    
+    public var status: Network.Status {
         return  !isConnectedToNetwork ? .unreachable :
                 isReachableViaWiFi    ? .wifi :
                 isRunningOnDevice     ? .wwan : .unreachable
@@ -58,13 +59,24 @@ public class Reachability {
 
 public extension Reachability {
     func start() throws {
-        guard let reachability = reachability, !isRunning else { return }
+        guard
+            let reachability = reachability,
+                !isRunning
+        else { return }
+        
         var context = SCNetworkReachabilityContext(version: 0, info: nil, retain: nil, release: nil, copyDescription: nil)
         context.info = Unmanaged<Reachability>.passUnretained(self).toOpaque()
-        guard SCNetworkReachabilitySetCallback(reachability, callout, &context) else { stop()
+        
+        guard
+            SCNetworkReachabilitySetCallback(reachability, callout, &context)
+        else {
+            stop()
             throw Network.Error.failedToSetCallout
         }
-        guard SCNetworkReachabilitySetDispatchQueue(reachability, reachabilitySerialQueue) else { stop()
+        guard
+            SCNetworkReachabilitySetDispatchQueue(reachability, reachabilitySerialQueue)
+        else {
+            stop()
             throw Network.Error.failedToSetDispatchQueue
         }
         reachabilitySerialQueue.async { self.flagsChanged() }
@@ -100,7 +112,10 @@ public extension Reachability {
 
     /// compares the current flags with the previous flags and if changed posts a flagsChanged notification
     func flagsChanged() {
-        guard let flags = flags, flags != reachabilityFlags else { return }
+        guard
+            let flags = flags,
+                flags != reachabilityFlags
+        else { return }
         reachabilityFlags = flags
         NotificationCenter.default.post(name: .flagsChanged, object: self)
     }
