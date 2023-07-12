@@ -9,4 +9,5 @@ import Foundation
 
 public struct AppKey {
     public static let appKeyNYT = "OXveMY2X8qPL33JaEQEnd03dKcuGgllI"
+    public static let coreDataName = "OverviewDB"
 }

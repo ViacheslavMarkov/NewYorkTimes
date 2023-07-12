@@ -13,4 +13,12 @@ public struct OverviewData: Decodable {
         case lists
         case publishedDate = "published_date"
     }
+    
+    init(
+        publishedDate: String,
+        lists: [OverviewDescriptionData]
+    ) {
+        self.publishedDate = publishedDate
+        self.lists = lists
+    }
 }

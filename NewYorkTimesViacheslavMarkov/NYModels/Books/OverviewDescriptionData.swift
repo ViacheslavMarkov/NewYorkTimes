@@ -15,4 +15,14 @@ public struct OverviewDescriptionData: Decodable {
         case displayName = "display_name"
         case books
     }
+    
+    init(
+        listId: Int,
+        displayName: String,
+        books: [BookData]
+    ) {
+        self.listId = listId
+        self.displayName = displayName
+        self.books = books
+    }
 }

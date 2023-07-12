@@ -99,14 +99,22 @@ extension BooksVM {
         }, configuration: config)
     }
     
-    func expandCell() {
-        
+    func manageLink(link: String) {
+        if Network.reachability.status == .unreachable {
+            delegate?.presentBasicAlert(
+                title: "Error internet connection.",
+                message: "Sorry, internet connection is not available!",
+                isAutomaticallyDismissed: true
+            )
+        } else {
+            delegate?.didTapLink(self, link: link)
+        }
     }
 }
 
 // MARK: - BookCVCellDelegating
 extension BooksVM: BookCVCellDelegating {
     public func didTapLink(_ sender: NYUI.BookCVCell, link: String) {
-        delegate?.didTapLink(self, link: link)
+        manageLink(link: link)
     }
 }

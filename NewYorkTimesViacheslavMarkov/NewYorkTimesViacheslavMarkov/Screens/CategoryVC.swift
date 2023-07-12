@@ -9,6 +9,7 @@ import UIKit
 import NYUI
 import NYViewModels
 import NYModels
+import NYNetworking
 
 final class CategoryVC: ViewLoadableVC<CategoryView> {
     private let viewModel: CategoryVM
@@ -30,11 +31,11 @@ final class CategoryVC: ViewLoadableVC<CategoryView> {
         customView.collectionView.dataSource = viewModel.makeDataSource()
         customView.collectionView.delegate = viewModel
         customView.collectionView.collectionViewLayout = viewModel.makeLayout()
+        viewModel.fetchBooks()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.fetchBooks()
     }
 }
 
@@ -56,5 +57,18 @@ private extension CategoryVC {
         let vm = BooksVM(books: books)
         let vc = BooksVC(viewModel: vm)
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func setupNotification() {
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(statusManager),
+                         name: .flagsChanged,
+                         object: nil)
+    }
+    
+    @objc
+    func statusManager(_ notification: Notification) {
+        viewModel.fetchBooks()
     }
 }

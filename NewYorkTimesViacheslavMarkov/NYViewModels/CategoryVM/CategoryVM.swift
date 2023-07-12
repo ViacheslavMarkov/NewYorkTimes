@@ -38,6 +38,17 @@ public final class CategoryVM: ModernListVM<CategorySection, CategorySection.Ite
     }
     
     public func fetchBooks() {
+        if Network.reachability.status == .unreachable {
+            let data = CoreDataService.getModelsFromDB()
+            
+            responseData = data
+            updateDynamicBooksDataSource()
+        } else {
+            fetchCategory()
+        }
+    }
+    
+    private func fetchCategory() {
         let bookNamesAPI = CategoryAPI(requestObject: EmptyRequest())
         NetworkRequestManager.shared.call(bookNamesAPI) { [weak self] (result) in
             guard let self = self else { return }
@@ -104,7 +115,7 @@ public extension CategoryVM {
         
         dataSource?.supplementaryViewProvider = { [weak self] (collectionView, _, indexPath) in
             guard let section = self?.sectionFrom(section: indexPath.section) else { return nil }
-
+            
             switch section {
             case .list:
                 return collectionView.dequeueConfiguredReusableSupplementary(
@@ -163,7 +174,7 @@ public extension CategoryVM {
             guard
                 let books = responseData?.lists.first(where: { $0.listId == item.id })?.books
             else { return }
-                    delegate?.cellTapped(self, books: books)
+            delegate?.cellTapped(self, books: books)
             print("Selected books: \(books)")
         default:
             assertionFailure("Wrong item sent to \(#function).")
