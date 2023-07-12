@@ -13,36 +13,36 @@ public class CoreDataService {
     private init() {}
     private static let managedContext = CoreDataStack.shared.managedContext
     
-    public static func retrieveDataFromDB() -> OverviewDBModel? {
-        var model: OverviewDBModel?
-        let request: NSFetchRequest<OverviewDBModel> = OverviewDBModel.fetchRequest()
+    public static func retrieveDataFromDB() -> OverviewEntity? {
+        var model: OverviewEntity?
+        let request: NSFetchRequest<OverviewEntity> = OverviewEntity.fetchRequest()
         if let data = try? CoreDataStack.shared.managedContext.fetch(request) {
             model = data.first
         }
         return model
     }
     
-    public static func retrieveOverviewDescriptionDBModel() -> [OverviewDescriptionDBModel]? {
-        var models: [OverviewDescriptionDBModel]?
-        let request: NSFetchRequest<OverviewDescriptionDBModel> = OverviewDescriptionDBModel.fetchRequest()
+    public static func retrieveOverviewDescriptionDBModel() -> [DescriptionEntity]? {
+        var models: [DescriptionEntity]?
+        let request: NSFetchRequest<DescriptionEntity> = DescriptionEntity.fetchRequest()
         if let data = try? CoreDataStack.shared.managedContext.fetch(request) {
             models = data
         }
         return models
     }
     
-    public static func retrieveBookDBModel() -> [BookDBModel]? {
-        var models: [BookDBModel]?
-        let request: NSFetchRequest<BookDBModel> = BookDBModel.fetchRequest()
+    public static func retrieveBookDBModel() -> [BookEntity]? {
+        var models: [BookEntity]?
+        let request: NSFetchRequest<BookEntity> = BookEntity.fetchRequest()
         if let data = try? CoreDataStack.shared.managedContext.fetch(request) {
             models = data
         }
         return models
     }
     
-    public static func retrieveBuyLinksDBModel() -> [BuyLinksDBModel]? {
-        var models: [BuyLinksDBModel]?
-        let request: NSFetchRequest<BuyLinksDBModel> = BuyLinksDBModel.fetchRequest()
+    public static func retrieveBuyLinksDBModel() -> [BuyLinksEntity]? {
+        var models: [BuyLinksEntity]?
+        let request: NSFetchRequest<BuyLinksEntity> = BuyLinksEntity.fetchRequest()
         if let data = try? CoreDataStack.shared.managedContext.fetch(request) {
             models = data
         }
@@ -53,17 +53,17 @@ public class CoreDataService {
         
         CoreDataStack.shared.clearAllBD()
         
-        let modelDB: OverviewDBModel
+        let modelDB: OverviewEntity
         if let alreadyExistModelDB = retrieveDataFromDB() {
             modelDB = alreadyExistModelDB
         } else {
-            modelDB = OverviewDBModel(context: managedContext)
+            modelDB = OverviewEntity(context: managedContext)
         }
         
         modelDB.publishedDate = model.publishedDate
         
         let list = createListOverviewDescriptionDBModel(list: model.lists)
-        var nsSet: Set<OverviewDescriptionDBModel> = []
+        var nsSet: Set<DescriptionEntity> = []
         list.forEach({ item in
             nsSet.insert(item)
         })
@@ -74,21 +74,21 @@ public class CoreDataService {
     }
     
     
-    private static func createListOverviewDescriptionDBModel(list: [OverviewDescriptionData]) -> [OverviewDescriptionDBModel] {
-        var listDB: [OverviewDescriptionDBModel]
+    private static func createListOverviewDescriptionDBModel(list: [OverviewDescriptionData]) -> [DescriptionEntity] {
+        var listDB: [DescriptionEntity]
         if let alreadyExistModelDB = retrieveOverviewDescriptionDBModel() {
             listDB = alreadyExistModelDB
         } else {
-            listDB = [OverviewDescriptionDBModel(context: managedContext)]
+            listDB = [DescriptionEntity(context: managedContext)]
         }
         
         list.forEach { model in
-            let item = OverviewDescriptionDBModel(context: managedContext)
+            let item = DescriptionEntity(context: managedContext)
             item.listId = Int16(model.listId)
             item.displayName = model.displayName
             
             let books = createListBookDBModel(books: model.books, with: String(model.listId))
-            var nsSet: Set<BookDBModel> = []
+            var nsSet: Set<BookEntity> = []
             books.forEach({ item in
                 nsSet.insert(item)
             })
@@ -100,16 +100,16 @@ public class CoreDataService {
         return listDB
     }
     
-    private static func createListBookDBModel(books: [BookData], with parentId: String) -> [BookDBModel] {
-        var listDB: [BookDBModel]
+    private static func createListBookDBModel(books: [BookData], with parentId: String) -> [BookEntity] {
+        var listDB: [BookEntity]
         if let alreadyExistModelDB = retrieveBookDBModel() {
             listDB = alreadyExistModelDB
         } else {
-            listDB = [BookDBModel(context: managedContext)]
+            listDB = [BookEntity(context: managedContext)]
         }
         
         books.forEach { book in
-            let item = BookDBModel(context: managedContext)
+            let item = BookEntity(context: managedContext)
             item.author = book.author
             item.descriptions = book.description
             item.imageUrlString = book.imageUrlString
@@ -119,7 +119,7 @@ public class CoreDataService {
             item.bookId = bookId
 
             let links = createListBuyLinksDBModel(links: book.buyLinks, with: bookId)
-            var nsSet: Set<BuyLinksDBModel> = []
+            var nsSet: Set<BuyLinksEntity> = []
             links.forEach({ item in
                 nsSet.insert(item)
             })
@@ -132,16 +132,16 @@ public class CoreDataService {
         return listDB
     }
     
-    private static func createListBuyLinksDBModel(links: [BuyLinksData], with parentId: String) -> [BuyLinksDBModel] {
-        var listDB: [BuyLinksDBModel]
+    private static func createListBuyLinksDBModel(links: [BuyLinksData], with parentId: String) -> [BuyLinksEntity] {
+        var listDB: [BuyLinksEntity]
         if let alreadyExistModelDB = retrieveBuyLinksDBModel() {
             listDB = alreadyExistModelDB
         } else {
-            listDB = [BuyLinksDBModel(context: managedContext)]
+            listDB = [BuyLinksEntity(context: managedContext)]
         }
         
         links.forEach { link in
-            let item = BuyLinksDBModel(context: managedContext)
+            let item = BuyLinksEntity(context: managedContext)
             item.name = link.name
             item.url = link.url
             item.parentId = parentId
@@ -160,7 +160,7 @@ public class CoreDataService {
         let model = retrieveDataFromDB()
         
         guard
-            let listsDB = model?.list?.allObjects as? [OverviewDescriptionDBModel]
+            let listsDB = model?.list?.allObjects as? [DescriptionEntity]
         else {
             let mockData = createMockData()
             return mockData
@@ -175,11 +175,11 @@ public class CoreDataService {
         return overview
     }
     
-    private static func createOverviewDescriptionData(listDB: [OverviewDescriptionDBModel]) -> [OverviewDescriptionData] {
+    private static func createOverviewDescriptionData(listDB: [DescriptionEntity]) -> [OverviewDescriptionData] {
         var list = [OverviewDescriptionData]()
         listDB.forEach({ model in
             guard
-                let booksDB = model.books!.allObjects as? [BookDBModel]
+                let booksDB = model.books!.allObjects as? [BookEntity]
             else {
                 return
             }
@@ -193,11 +193,11 @@ public class CoreDataService {
         return list
     }
     
-    private static func createBooksData(booksDB: [BookDBModel]) -> [BookData] {
+    private static func createBooksData(booksDB: [BookEntity]) -> [BookData] {
         var list = [BookData]()
         booksDB.forEach({ model in
             guard
-                let linksDB = model.links?.allObjects as? [BuyLinksDBModel]
+                let linksDB = model.links?.allObjects as? [BuyLinksEntity]
             else {
                 return
             }
@@ -215,7 +215,7 @@ public class CoreDataService {
         return list
     }
     
-    private static func createLinksData(linksDB: [BuyLinksDBModel]) -> [BuyLinksData] {
+    private static func createLinksData(linksDB: [BuyLinksEntity]) -> [BuyLinksData] {
         var list = [BuyLinksData]()
         linksDB.forEach({ model in
             let item = BuyLinksData(

@@ -8,8 +8,8 @@
 import Foundation
 
 public enum EntityNameType: String, CaseIterable {
-    case links = "BuyLinksDBModel"
-    case books = "BookDBModel"
-    case descriptions = "OverviewDescriptionDBModel"
-    case overview = "OverviewDBModel"
+    case links = "BuyLinksEntity"
+    case books = "BookEntity"
+    case descriptions = "DescriptionEntity"
+    case overview = "OverviewEntity"
 }

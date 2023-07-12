@@ -38,7 +38,7 @@ public final class CoreDataStack {
         }
     }
     
-    func deleteDBItem(object: OverviewDBModel) {
+    func deleteDBItem(object: OverviewEntity) {
         storeContainer.viewContext.delete(object)
     }
     
